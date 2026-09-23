@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- My Account (/my/account): read-only for portal users -->
+    <template id="portal_my_details_restrict" inherit_id="portal.portal_my_details" name="Restrict Portal User Account Edit">
+        <xpath expr="//form[@name='address_form']" position="before">
+            <div t-if="request.env.user._is_portal()" class="alert alert-info mb-3" role="alert">
+                <i class="fa fa-info-circle"/> Your account details can only be modified by our support team. Please contact us if you need to update your information.
+            </div>
+        </xpath>
+        <!-- A disabled fieldset disables every field of the form, whichever module adds it. -->
+        <xpath expr="//div[@name='address_details']" position="before">
+            <fieldset name="portal_restricted_fields"
+                      t-att-disabled="'disabled' if request.env.user._is_portal() else None"/>
+        </xpath>
+        <xpath expr="//fieldset[@name='portal_restricted_fields']" position="inside">
+            <xpath expr="//div[@name='address_details']" position="move"/>
+        </xpath>
+        <xpath expr="//t[@t-call='portal.address_footer']" position="replace">
+            <t t-if="request.env.user._is_portal()">
+                <div class="mt32 mb32">
+                    <a role="button" href="/my/" class="btn btn-secondary">
+                        <i class="fw-light fa fa-angle-left me-2"/>Back
+                    </a>
+                </div>
+            </t>
+            <t t-else="">
+                <t t-call="portal.address_footer"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- My Addresses (/my/addresses): no "Add Address" for portal users -->
+    <template id="my_addresses_restrict" inherit_id="portal.my_addresses" name="Restrict Portal User Address Add">
+        <xpath expr="//a[hasclass('o_address_card_add_new')]" position="attributes">
+            <attribute name="t-if">not request.env.user._is_portal()</attribute>
+        </xpath>
+        <xpath expr="//a[contains(@t-attf-class, 'o_add_billing_address_btn')]" position="attributes">
+            <attribute name="t-if">not request.env.user._is_portal()</attribute>
+        </xpath>
+    </template>
+
+    <!-- Payment page: no "Edit" / "Want an invoice?" link for portal users -->
+    <template id="address_edit_button_restrict" inherit_id="website_sale.address_edit_button" name="Restrict Portal User Payment Address Edit">
+        <xpath expr="//t[@t-if]" position="attributes">
+            <attribute name="t-if">xmlid != 'website_sale.confirmation' and not request.env.user._is_portal()</attribute>
+        </xpath>
+    </template>
+
+</odoo>

@@ -1,4 +1,5 @@
 from odoo import fields, models
+from odoo.http import request
 
 
 class SaleOrder(models.Model):
@@ -17,6 +18,12 @@ class SaleOrder(models.Model):
 
     def _is_reorder_allowed(self):
         self.ensure_one()
+        # An order placed on another Transmed website belongs to another company: its products
+        # are not sellable here, so do not offer to reorder it from this site.
+        if request and self.website_id:
+            current_website = request.env['website'].get_current_website()
+            if current_website and self.website_id != current_website:
+                return False
         return self.state in ['sale', 'jde_confirmed'] and any(
             line._is_reorder_allowed() for line in self.order_line if not line.display_type)
 
@@ -42,6 +49,13 @@ class SaleOrder(models.Model):
             return True
         term = self.partner_id.commercial_partner_id.property_payment_term_id or self.partner_id.property_payment_term_id
         return not term or (bool(term.b2b_code) and term.b2b_code != 'CTD')
+
+    def _get_delivery_methods(self):
+        # Delivery charges come from JD Edwards: orders confirmed without online payment
+        # (credit customers and salesperson orders) carry no Odoo delivery method, as in 17.0.
+        if self and self._b2b_skip_online_payment():
+            return self.env['delivery.carrier']
+        return super()._get_delivery_methods()
 
     def get_jde_order_status(self):
         """ True when JDE has printed the invoice of every delivery that was not cancelled. """

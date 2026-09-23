@@ -39,6 +39,11 @@ their requests in the portal.
 2. Make sure salespersons are set on customers or orders: the confirmation email goes to the order's salesperson.
 
 ## Technical Notes
+- The **Return** button appears on a portal order only when the order is confirmed (including JDE
+  Confirmed) and something has already been delivered; the return form itself is a modal on the
+  order page. Its title is not an `<h2>`, so the portal sidebar does not list a menu entry pointing
+  at the hidden modal.
+
 - **Original module:** *Website Return Order Management* by **Cybrosys Techno Solutions** (https://www.cybrosys.com), AGPL-3. Migrated to Odoo 19.0 by Plennix Technologies; the licence and author credits are kept.
 - **Models:** `sale.return` (portal.mixin), `return.reason`; `stock.picking` gets `return_order`, `return_order_pick` and `return_order_picking`; `sale.order.line` gets `remaining_qty_return`; return counts on `sale.order` and `res.partner`.
 - **Routes:** `/sale_return` (POST, logged-in customers) creates the request; `/my/return_orders` and `/my/return_orders/<id>` are the portal pages; `/my/request-thank-you` is the confirmation page.

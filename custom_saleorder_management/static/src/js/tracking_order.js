@@ -1,4 +1,5 @@
 import { _t } from '@web/core/l10n/translation';
+import { AlertDialog } from '@web/core/confirmation_dialog/confirmation_dialog';
 import { rpc } from '@web/core/network/rpc';
 import { registry } from '@web/core/registry';
 import { Interaction } from '@web/public/interaction';
@@ -21,6 +22,12 @@ export class SaleTrackingOrder extends Interaction {
         if (result && result.redirect) {
             this.showTrackingInfo(result.driver, result.vehicle);
             window.open(result.url, '_blank');
+        } else {
+            // JDE only sends the driver position once the delivery has left the warehouse.
+            this.services.dialog.add(AlertDialog, {
+                title: _t("Track Order"),
+                body: _t("Live tracking is available once your delivery is on its way."),
+            });
         }
     }
 

@@ -22,9 +22,11 @@
                 <div class="modal-dialog modal-content" tabindex="-1"
                      role="dialog">
                     <div class="modal-header">
-                        <h2 style="text-align:center; font-size 24px; font-weight:bold"
-                            class="o_default_snippet_text">Sale Return
-                        </h2>
+                        <!-- Not an <h2>: the portal sidebar builds its menu from the h2 of
+                             #quote_content, and this one lives in a hidden modal. -->
+                        <div style="text-align:center; font-size: 24px; font-weight:bold"
+                             class="o_default_snippet_text h2 mb-0">Sale Return
+                        </div>
                         <button type="button" class="btn-close"
                                 data-bs-dismiss="modal"/>
                     </div>

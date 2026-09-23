@@ -121,6 +121,9 @@ class WebsiteSaleB2B(WebsiteSale):
             # As in 17.0, no Odoo delivery method is required: delivery charges come from JDE.
             if redirection := self._check_cart_and_addresses(order_sudo):
                 return redirection
+            # Delivery charges come from JDE: no carrier, no delivery line.
+            order_sudo.carrier_id = False
+            order_sudo._remove_delivery_line()
             request.session['sale_last_order_id'] = order_sudo.id
             order_sudo.with_context(send_email=True).action_confirm()
             request.website.sale_reset()

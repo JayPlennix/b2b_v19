@@ -165,6 +165,25 @@
         </xpath>
     </template>
 
+    <!-- The cart keeps the 17.0 layout: no quick reorder, no "save for later", no promo code. -->
+    <template id="cart_layout" inherit_id="website_sale.cart" name="Transmed Cart Layout">
+        <xpath expr="//div[@id='shop_cart']//div[t[@t-call='website_sale.quick_reorder_button']]"
+               position="attributes">
+            <attribute name="class" add="d-none" separator=" "/>
+        </xpath>
+    </template>
+
+    <!-- Delivery charges come from JD Edwards: no delivery method on the checkout page for
+         orders confirmed without online payment (credit customers, salesperson orders). -->
+    <!-- The block stays in the DOM (the checkout javascript refreshes it when the delivery
+         address changes), it is only hidden. -->
+    <template id="checkout_hide_delivery_method" inherit_id="website_sale.checkout"
+              name="Transmed Hide Delivery Method">
+        <xpath expr="//div[t[@t-call='website_sale.delivery_form']]" position="attributes">
+            <attribute name="t-attf-class">mb-4 #{'d-none' if order._b2b_skip_online_payment() else ''}</attribute>
+        </xpath>
+    </template>
+
     <!-- ============ Checkout: salesperson chooses the customer ============ -->
     <template id="checkout_salesperson_customer" inherit_id="website_sale.checkout" name="Transmed Salesperson Customer">
         <xpath expr="//div[@id='shop_checkout']" position="before">

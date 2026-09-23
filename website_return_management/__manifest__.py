@@ -13,7 +13,7 @@
 ################################################################################
 {
     'name': 'Website Return Order Management',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.0.1',
     'category': 'Website',
     'summary': 'Lets web shop customers request returns of delivered products, and staff process them as return transfers.',
     'description': """

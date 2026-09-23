@@ -26,7 +26,10 @@ module adapts it to how Transmed sells:
 - Contacts of a company always invoice the company. Customers cannot edit their addresses online (they are sent to Contact Us); salespersons can.
 - My Orders shows each contact's own orders (not the whole company's), including orders confirmed in JDE, with a **Status** column. Deliveries show their JDE status.
 - The payment status shows "Your payment was processed successfully" once JDE has printed the invoice of every delivery.
-- **Clear Cart** button in the cart. The sliced/shredded option is shown on cart lines. Odoo's delivery line is hidden (delivery charges come from JDE).
+- **Clear Cart** button in the cart. The sliced/shredded option is shown on cart lines. The cart keeps the 17.0
+  layout: no promo code, no "save for later", no quick reorder.
+- Delivery charges come from JDE: orders confirmed without online payment carry no Odoo delivery method. The
+  delivery-method block is hidden on the checkout page and Odoo's delivery line never reaches the order.
 - Wishlist only for logged-in customers. Login page sends new customers to Contact Us instead of self sign-up.
 - Snippets: **Popular Brands**, **Main Categories**, and dynamic **Best Selling Products**, **High Review Products** (Mini Products card) and **Featured Categories** (up to 50).
 - Optional **Transmed Footer** with a WhatsApp button.
@@ -74,6 +77,13 @@ module adapts it to how Transmed sells:
   - `/shop/salesperson/customer` (POST, CSRF) switches the cart customer, restricted to the salesperson's customers. `sale.order._update_address` keeps that customer when the web shop resets the cart to the logged-in user.
   - `_prepare_address_data` limits billing to the parent company. `shop_address` / `shop_address_submit` are blocked for portal users who are not salespersons.
   - The cart's next step always goes to `/shop/checkout` (no skip), and `sale.order.action_confirm` sets the salesperson's customer.
+  - **Order Again** is hidden on an order that was placed on another Transmed website: that website belongs to
+    another company, so its products cannot be added to the cart here. When a reorder fails for another reason,
+    the message is shown to the customer (19.0 core only logs it in the browser console).
+  - `sale.order._get_delivery_methods()` returns nothing for orders that skip online payment, the delivery-method
+    block on the checkout page is hidden (it stays in the DOM, the checkout javascript refreshes it when the
+    delivery address changes), and `shop_payment` clears the carrier and its line before confirming.
+  - Checkout steps are named as in 17.0 (**Review Order**, **Shipping**, **Payment**) on the website record.
 - **Portal:**
   - `_prepare_orders_domain` / `_prepare_quotations_domain` show orders where the contact is the customer (or a child) or a follower.
   - Record rules (additive, read-only, portal): partners under the user's own contact, and sale orders the user follows.

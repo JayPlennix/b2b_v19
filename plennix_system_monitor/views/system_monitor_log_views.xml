@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="system_monitor_action" model="ir.actions.act_window">
+            <field name="name">System Errors Monitor</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">system.monitor.log</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <menuitem id="system_monitor_menuitem" name="System Errors Monitor" parent="base.menu_ir_property" action="system_monitor_action"/>
+
+        <record id="system_monitor_view_list" model="ir.ui.view">
+            <field name="name">system_monitor_view_list</field>
+            <field name="model">system.monitor.log</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="exception"/>
+                    <field name="model"/>
+                    <field name="method"/>
+                    <field name="user_id"/>
+                    <field name="create_date"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="system_monitor_view_form" model="ir.ui.view">
+            <field name="name">system_monitor_view_form</field>
+            <field name="model">system.monitor.log</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group string="Action Details">
+                                <field name="model"/>
+                                <field name="method"/>
+                                <field name="method_args"/>
+                            </group>
+                            <group string="Context">
+                                <field name="allowed_companies_ids" widget="many2many_tags"/>
+                                <field name="user_id"/>
+                                <field name="tz"/>
+                                <field name="lang"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Stacktrace">
+                                <group>
+                                    <field name="exception"/>
+                                    <field name="description"/>
+                                </group>
+                                <field name="stacktrace" widget="ace"/>
+                            </page>
+                            <page string="Request">
+                                <field name="request" widget="ace"/>
+                            </page>
+                            <page string="Response">
+                                <field name="response" widget="ace"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="system_monitor_view_search" model="ir.ui.view">
+            <field name="name">system_monitor_view_search</field>
+            <field name="model">system.monitor.log</field>
+            <field name="arch" type="xml">
+                <search>
+                    <!--    SEARCH    -->
+                    <field name="exception" string="Exception"/>
+                    <field name="model" string="Model"/>
+                    <field name="method" string="Method"/>
+                    <field name="user_id" string="User"/>
+                    <!--    FILTER    -->
+                    <filter name="filter_date" date="create_date"/>
+                    <group>
+                        <filter name="exception_groupby" string="Exception" context="{'group_by': 'exception'}"/>
+                        <filter name="model_groupby" string="Model" context="{'group_by': 'model'}"/>
+                        <filter name="method_groupby" string="Method" context="{'group_by': 'method'}"/>
+                        <filter name="user_id_groupby" string="User" context="{'group_by': 'user_id'}"/>
+                        <filter name="create_date_groupby" string="Create Date" context="{'group_by': 'create_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

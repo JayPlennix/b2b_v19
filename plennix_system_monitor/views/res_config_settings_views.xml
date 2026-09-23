@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="res_config_settings_view_form_systemm_monitor" model="ir.ui.view">
+            <field name="name">res_config_settings_view_form_systemm_monitor</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="inside">
+                    <app data-string="System Monitor" id="plennix_system_monitor" string="System Monitor" name="plennix_system_monitor">
+                        <block title="System Monitor" id="system_monitor_block">
+                            <setting string="Daily Error Report">
+                                <div class="text-muted content-group mt16">
+                                    <span>Sends a daily report with errors to selected users</span>
+                                    <br/>
+                                    <field name="logger_user_ids" widget="many2many_tags"/>
+                                </div>
+                            </setting>
+                        </block>
+                    </app>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

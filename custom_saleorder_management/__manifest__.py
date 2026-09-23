@@ -1,6 +1,6 @@
 {
     'name': 'Custom Sale Order Management (JDE)',
-    'version': '19.0.1.0.0',
+    'version': '19.0.1.0.1',
     'category': 'Website',
     'summary': 'Sends B2B shop orders to JD Edwards (JDE) and keeps deliveries, prices, invoices, returns and tracking in sync.',
     'description': """

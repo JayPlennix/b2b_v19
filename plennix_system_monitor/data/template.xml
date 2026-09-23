@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="email_template_daily_errors_log" model="mail.template">
+            <field name="name">Send Daily Errors Log</field>
+            <field name="model_id" ref="model_system_monitor_log"/>
+            <field name="subject">Daily Error Log</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Hello, <br/> <br/>
+                        Please find attached the error logs for today. <br/>
+                    </p>
+                </div>
+            </field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

@@ -33,6 +33,7 @@ from the same, up-to-date order information.
 3. When the order is confirmed it is sent to JDE. JDE's order numbers are read back and the Odoo delivery is split into one delivery per JDE delivery note (state **JDE Confirmed**).
 4. Every 10 minutes Odoo updates each delivery's JDE status. When JDE prints the invoice, quantities, prices and the invoice number are copied back and the delivery is validated.
 5. The customer follows the order on the portal, with JDE prices and totals, and can click **Track Order** once the invoice is printed.
+   Before that, **Track Order** says that live tracking is not available yet (17.0 did nothing at all).
 6. Returns created in JDE appear in Odoo as return deliveries and are validated. Cash customers are refunded to their eWallet.
 
 ## Dependencies

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Custom Website (Transmed B2B)',
-    'version': '19.0.1.0.3',
+    'version': '19.0.1.1.0',
     'category': 'Website/Website',
     'summary': 'Transmed B2B web shop: category menu, per-kg prices, customer-specific catalogue, salesperson ordering and credit checkout.',
     'description': """
@@ -48,6 +48,7 @@ Developed by Plennix Technologies — https://www.plennix.com
         'data/featured_categories_template.xml',
         'views/backend_views.xml',
         'views/website_templates.xml',
+        'views/homepage.xml',
         'views/snippets.xml',
     ],
     'assets': {

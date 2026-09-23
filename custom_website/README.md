@@ -32,6 +32,10 @@ module adapts it to how Transmed sells:
   delivery-method block is hidden on the checkout page and Odoo's delivery line never reaches the order.
 - Wishlist only for logged-in customers. Login page sends new customers to Contact Us instead of self sign-up.
 - Snippets: **Popular Brands**, **Main Categories**, and dynamic **Best Selling Products**, **High Review Products** (Mini Products card) and **Featured Categories** (up to 50).
+- **Home page**: installing the module puts the Transmed home page on the site — banner carousel, Main
+  Categories, High Review Products, Featured Categories, Best Selling Products and Popular Brands. It follows
+  the data (categories flagged *Is Main Category*, brands flagged *Main Brand*), so there is nothing to
+  configure per database, and it stays editable in the website editor.
 - Optional **Transmed Footer** with a WhatsApp button.
 
 ## How It Works (User Flow)
@@ -59,6 +63,9 @@ module adapts it to how Transmed sells:
 4. **KSA:** tick **Is Transmed KSA** on the company and set the **Customer Location** on KSA customers.
 5. **Catalogue:** use **Limited Items** on products reserved to specific customers. Flag categories as **Is Featured Category** / **Is Main Category**, products as **Is Best Selling** / **Is High Review**, and brands as **Main Brand**.
 6. **Footer:** activate the **Transmed Footer** view (Settings → Technical → Views) to use the Transmed footer.
+7. **Home page:** flag the categories to show in **Main Categories** (*Is Main Category*, first four) and the
+   brands of **Popular Brands** (*Main Brand*, first twelve); both sections are hidden while nothing is flagged.
+   Replace the five banner pictures in the website editor.
 
 ## Technical Notes
 - **Models:**
@@ -88,6 +95,11 @@ module adapts it to how Transmed sells:
   - `_prepare_orders_domain` / `_prepare_quotations_domain` show orders where the contact is the customer (or a child) or a follower.
   - Record rules (additive, read-only, portal): partners under the user's own contact, and sale orders the user follows.
 - **Snippet filters:** `ir.filters` and `website.snippet.filter` records for best selling, high review and featured categories. The snippet limit constraint is raised to 50.
+- **Home page:** `custom_website.homepage_transmed` extends `website.homepage`. It uses no database ids: the
+  dynamic snippets resolve their filter with `env.ref`, the categories and brands are searched at render time
+  and the five banners are module pictures (`static/src/img/home_banner_*.jpg`) meant to be replaced in the
+  editor. Deactivate the view **Transmed Homepage** (Settings → Technical → Views) to go back to an empty
+  home page; editing the page in the editor keeps working (the view is copied to the website as usual).
 - **Migrated from 17.0 to 19.0:**
   - v17 kept full copies of core methods: `shop`, `address`, `checkout_values`, `_checkout_form_save`, `confirm_order`, `update_cart_address`, `website.sale_get_order`, `sale.order._cart_update`, `product.pricelist.item._compute_price`, `website.snippet.filter._filter_records_to_values` and `_apply_taxes_to_price`. They were replaced by small overrides of the v19 hooks, keeping only the Transmed-specific behaviour.
   - The address-form customer selector (`/get_customer_info` and its JavaScript) became a customer selector on the checkout page.

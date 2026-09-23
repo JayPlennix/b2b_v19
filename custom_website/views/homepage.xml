@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Transmed homepage, as in 17.0: banner carousel, main categories, best selling and high
+        review products, featured categories and popular brands.
+
+        The page is part of the module so that it is there right after the installation. It uses no
+        hard-coded ids: categories, brands and the snippet filters are looked up at render time, and
+        the banners are module pictures. Everything stays editable in the website editor (editing
+        the page copies it to the website, as for any inherited view), and the whole page can be
+        switched off in Settings > Technical > Views ("Transmed Homepage").
+    -->
+    <template id="homepage_transmed" inherit_id="website.homepage" name="Transmed Homepage">
+        <xpath expr="//div[@id='wrap']" position="inside">
+
+            <!-- ============ Banner carousel ============ -->
+            <section class="s_carousel_wrapper" data-vxml="001" data-snippet="s_carousel" data-name="Carousel">
+                <div class="s_carousel s_carousel_default carousel slide" data-bs-ride="true"
+                     data-bs-interval="10000" id="b2b_home_carousel"
+                     style="background-color: rgb(243, 242, 242);">
+                    <div class="container-fluid">
+                        <ol class="carousel-indicators o_we_no_overlay">
+                            <li data-bs-target="#b2b_home_carousel" class="active" data-bs-slide-to="0" aria-current="true"/>
+                            <li data-bs-target="#b2b_home_carousel" data-bs-slide-to="1"/>
+                            <li data-bs-target="#b2b_home_carousel" data-bs-slide-to="2"/>
+                            <li data-bs-target="#b2b_home_carousel" data-bs-slide-to="3"/>
+                            <li data-bs-target="#b2b_home_carousel" data-bs-slide-to="4"/>
+                        </ol>
+                        <div class="carousel-inner">
+                            <t t-foreach="[1, 2, 3, 4, 5]" t-as="slide">
+                                <div t-attf-class="carousel-item o_colored_level #{'active' if slide_first else ''}"
+                                     data-name="Slide" style="background-color: rgb(243, 242, 242);">
+                                    <img t-attf-src="/custom_website/static/src/img/home_banner_#{slide}.jpg"
+                                         alt="" class="img img-fluid o_we_custom_image"
+                                         style="width: 100%; height: auto;" loading="lazy"/>
+                                </div>
+                            </t>
+                        </div>
+                        <a class="carousel-control-prev o_not_editable o_we_no_overlay" role="img" aria-label="Previous"
+                           title="Previous" href="#b2b_home_carousel" style="display:none;" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"/>
+                            <span class="visually-hidden">Previous</span>
+                        </a>
+                        <a class="carousel-control-next o_not_editable o_we_no_overlay" role="img" aria-label="Next"
+                           title="Next" href="#b2b_home_carousel" style="display:none;" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"/>
+                            <span class="visually-hidden">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ Main categories ============ -->
+            <t t-set="main_categories"
+               t-value="request.env['product.public.category'].sudo().search(
+                            [('is_main_category', '=', True),
+                             ('website_id', 'in', (False, request.website.id))], limit=4)"/>
+            <section t-if="main_categories" class="s_three_columns home_three_columns pt32 pb32 o_colored_level"
+                     data-vcss="001" data-snippet="s_four_columns" data-name="Main Categories"
+                     style="background-image: linear-gradient(0deg, rgb(255, 255, 255) 50%, rgb(243, 242, 242) 50%);">
+                <div class="container-fluid">
+                    <div class="row d-flex align-items-stretch">
+                        <t t-foreach="main_categories" t-as="category">
+                            <div class="s_col_no_bgcolor pt16 pb16 col-lg-3">
+                                <div class="card h-100">
+                                    <a t-attf-href="/shop/category/#{slug(category)}">
+                                        <img class="card-img-top img img-fluid o_we_custom_image"
+                                             style="height: 223px !important; object-fit: cover;"
+                                             t-attf-src="/web/image/product.public.category/#{category.id}/image_1920"
+                                             t-att-alt="category.name" loading="lazy"/>
+                                        <div class="card-body">
+                                            <h3 class="card-title" t-out="category.name"/>
+                                            <p class="card-text" t-out="category.website_description"/>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ High review products ============ -->
+            <section class="s_title o_colored_level pb0 pt0" data-vcss="001" data-snippet="s_title" data-name="Title">
+                <div class="container s_allow_columns">
+                    <h2 class="display-3-fs" style="text-align: center;">
+                        <strong><span class="h3-fs">High Review Products</span></strong>
+                    </h2>
+                </div>
+            </section>
+            <section data-snippet="s_dynamic_snippet_carousel" data-name="Dynamic Carousel"
+                     class="s_dynamic_snippet_carousel s_dynamic o_colored_level pb0 pt0 s_product_product_mini_product_card o_dynamic_empty"
+                     data-number-of-records="16" data-carousel-interval="5000"
+                     data-number-of-elements="6" data-number-of-elements-small-devices="1"
+                     t-att-data-filter-id="request.env.ref('custom_website.dynamic_filter_high_review_product').id"
+                     data-template-key="custom_website.dynamic_filter_template_product_product_mini_product_card">
+                <div class="o_not_editable container-fluid">
+                    <div class="dynamic_snippet_template"/>
+                </div>
+            </section>
+
+            <!-- ============ Featured categories ============ -->
+            <section class="s_title o_colored_level pb0 pt0" data-vcss="001" data-snippet="s_title" data-name="Title">
+                <div class="container s_allow_columns">
+                    <h2 class="display-3-fs" style="text-align: center;">
+                        <strong><span class="h3-fs">Featured Categories</span></strong>
+                    </h2>
+                </div>
+            </section>
+            <section data-snippet="s_dynamic_snippet" data-name="Dynamic Snippet"
+                     class="s_dynamic_snippet s_dynamic o_colored_level s_product_public_category_mini_category_card pb0 pt0 o_dynamic_empty"
+                     data-number-of-records="50" data-number-of-elements="6" data-number-of-elements-small-devices="1"
+                     t-att-data-filter-id="request.env.ref('custom_website.dynamic_filter_product_featured_category').id"
+                     data-template-key="custom_website.dynamic_filter_template_product_public_category_mini_category_card">
+                <div class="o_not_editable container-fluid">
+                    <div class="dynamic_snippet_template"/>
+                </div>
+            </section>
+
+            <!-- ============ Best selling products ============ -->
+            <section class="s_title o_colored_level pt0 pb16" data-vcss="001" data-snippet="s_title" data-name="Title">
+                <div class="s_allow_columns container">
+                    <h2 class="display-3-fs" style="text-align: center;">
+                        <strong><span class="h3-fs">Best Selling Product</span></strong>
+                    </h2>
+                </div>
+            </section>
+            <section data-snippet="s_dynamic_snippet_carousel" data-name="Dynamic Carousel"
+                     class="s_dynamic_snippet_carousel s_dynamic o_colored_level pt0 pb24 s_product_product_mini_product_card o_dynamic_empty"
+                     data-number-of-records="16" data-carousel-interval="5000"
+                     data-number-of-elements="6" data-number-of-elements-small-devices="1"
+                     t-att-data-filter-id="request.env.ref('custom_website.dynamic_filter_best_selling_product').id"
+                     data-template-key="custom_website.dynamic_filter_template_product_product_mini_product_card">
+                <div class="o_not_editable container-fluid">
+                    <div class="dynamic_snippet_template"/>
+                </div>
+            </section>
+
+            <!-- ============ Popular brands ============ -->
+            <t t-set="main_brands"
+               t-value="request.env['product.brand'].sudo().search([('main_brand', '=', True)], limit=12)"/>
+            <section t-if="main_brands" class="s_references pt48 pb32 o_colored_level"
+                     data-snippet="s_references_2" data-name="Popular Brands">
+                <div class="container-fluid">
+                    <h4 style="text-align: center; font-weight:600;">Shop Popular Brands</h4>
+                    <div class="row">
+                        <t t-foreach="main_brands" t-as="brand">
+                            <div class="col-lg-1 pt16 pb16 o_colored_level">
+                                <a t-attf-href="/shop?brand_id=#{brand.id}">
+                                    <img class="img img-fluid mx-auto" t-att-alt="brand.name"
+                                         t-attf-src="/web/image/product.brand/#{brand.id}/logo" loading="lazy"/>
+                                </a>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </section>
+
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,23 @@
+<odoo>
+    <!-- Packagings / units are chosen with the standard Odoo 19 unit selector
+         (product Packagings). Only the sliced / shredded option is custom. -->
+    <template id="inherit_product_page" inherit_id="website_sale.product">
+        <xpath expr="//div[hasclass('o_wsale_product_details_content_section_cta')]" position="before">
+            <div class="extra_fields mb-4" t-if="product.item_type == 'ARP'">
+                <div class="mb-2">
+                    <label for="product_type_option" class="form-label">Product Type Option</label>
+                    <select name="product_type_option" class="form-select" style="width: auto;">
+                        <option value="">No Customization</option>
+                        <option value="sliced" data-show-no-of-pieces="true">Sliced</option>
+                        <option value="shredded" data-show-no-of-pieces="true">Shredded</option>
+                    </select>
+                    <div class="mt-2 d-none" id="quantity_pieces_input_wrapper">
+                        <label for="quantity_pieces" class="form-label">No. of pieces:</label>
+                        <input type="number" id="quantity_pieces" name="quantity_pieces"
+                               class="form-control" style="width: auto;" min="1" value="1"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

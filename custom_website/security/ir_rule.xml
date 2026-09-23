@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Portal users can also read the contacts / addresses under their own contact (core rule
+         only covers their commercial partner). Rules of the same group are combined with OR. -->
+    <record id="res_partner_portal_own_children_rule" model="ir.rule">
+        <field name="name">res_partner: portal: read access on my own contact and its children</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="domain_force">[('id', 'child_of', user.partner_id.id)]</field>
+        <field name="groups" eval="[Command.link(ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Portal salespersons follow the orders they place for their customers: let them read those
+         orders (as in 17.0, where the core rule also allowed followed orders). -->
+    <record id="sale_order_portal_follower_rule" model="ir.rule">
+        <field name="name">sale.order: portal: read the orders I follow</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="domain_force">[('message_partner_ids', 'child_of', [user.partner_id.id])]</field>
+        <field name="groups" eval="[Command.link(ref('base.group_portal'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

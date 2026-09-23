@@ -1,0 +1,17 @@
+<odoo>
+<data>
+<record id="account_payment_term_inherit_b2b_form" model="ir.ui.view">
+            <field name="name">account.payment.term.inherit.b2b.form</field>
+            <field name="model">account.payment.term</field>
+            <field name="inherit_id" ref="account.view_payment_term_form"/>
+            <field name="arch" type="xml">
+               <xpath expr="//group[1]" position="inside">
+                    <field name="b2b_code"/>
+                    <field name="is_cash_payment_term"/>
+            </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

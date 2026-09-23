@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Shop tiles: no price and no add-to-cart button for visitors who are not logged in. -->
+    <template id="website_sale_products_inherit" inherit_id="website_sale.products_item" priority="30">
+        <xpath expr="//div[hasclass('product_price')]" position="attributes">
+            <attribute name="t-if">not request.env.user._is_public()</attribute>
+        </xpath>
+    </template>
+
+    <template id="website_sale_products_add_to_cart_inherit" inherit_id="website_sale.shop_product_buttons" priority="30">
+        <xpath expr="//t[@name='buttons_container']" position="attributes">
+            <attribute name="t-if">not request.env.user._is_public()</attribute>
+        </xpath>
+        <xpath expr="//t[@name='buttons_container']" position="after">
+            <p t-if="request.env.user._is_public()" class="text-muted small mb-0">
+                <a href="/web/login?redirect=/shop">Log in</a> to see prices
+            </p>
+        </xpath>
+    </template>
+
+    <!-- Product page: no price section, no add-to-cart. -->
+    <template id="website_sale_product_price_inherit" inherit_id="website_sale.product" priority="30">
+        <xpath expr="//div[hasclass('o_wsale_product_details_content_section_price')]" position="attributes">
+            <attribute name="t-if">not request.env.user._is_public()</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_wsale_product_details_content_section_price')]" position="after">
+            <div t-if="request.env.user._is_public()" class="o_wsale_product_details_content_section mb-4">
+                <p class="text-muted mb-0">
+                    Please <a t-attf-href="/web/login?redirect=#{request.httprequest.path}">log in</a>
+                    to see prices and to order.
+                </p>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="website_sale_cta_inherit" inherit_id="website_sale.cta_wrapper" priority="30">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="attributes">
+            <attribute name="t-if">not request.env.user._is_public()</attribute>
+        </xpath>
+    </template>
+
+    <!-- Product snippets (Best Selling, High Review): hide the price too. -->
+    <template id="mini_product_card_inherit" priority="30"
+              inherit_id="custom_website.dynamic_filter_template_product_product_mini_product_card"
+              name="Hide Prices in Mini Product Card">
+        <xpath expr="//div[hasclass('text-danger')]" position="attributes">
+            <attribute name="t-if">not data.get('prevent_zero_price_sale') and not is_sample and not request.env.user._is_public()</attribute>
+        </xpath>
+    </template>
+</odoo>

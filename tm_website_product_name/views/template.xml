@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Product page: show the customer-facing name when one is set. -->
+    <template id="product_actual_name_inherit" inherit_id="website_sale.product_title" priority="20">
+        <xpath expr="//h1[@t-field='product.name']" position="replace">
+            <h1 t-if="product.actual_name" t-field="product.actual_name"
+                t-attf-class="h3 {{'mb-3' if not product.description_ecommerce and not is_view_active('website_sale.product_comment') else ''}}"/>
+            <h1 t-else="" t-field="product.name"
+                t-attf-class="h3 {{'mb-3' if not product.description_ecommerce and not is_view_active('website_sale.product_comment') else ''}}"/>
+        </xpath>
+    </template>
+
+    <!-- Shop tile: same name. -->
+    <template id="products_item_with_actual_name" inherit_id="website_sale.products_item" priority="20"
+              name="Products Item with Actual Name">
+        <xpath expr="//h2[hasclass('o_wsale_products_item_title')]//span[@t-field='product.name']" position="replace">
+            <span t-if="product.actual_name" t-field="product.actual_name"/>
+            <span t-else="" t-field="product.name"/>
+        </xpath>
+    </template>
+</odoo>

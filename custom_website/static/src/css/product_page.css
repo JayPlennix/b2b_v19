@@ -1,0 +1,30 @@
+.specs-table {
+    margin: auto;
+}
+
+.specs-table .table {
+    width: 100%;
+    margin-bottom: 0;
+    background-color: transparent;
+}
+
+.specs-table .table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+.specs-table .table-bordered th,
+.specs-table .table-bordered td {
+    border: 1px solid #dee2e6;
+}
+
+.specs-table th {
+    font-weight: bold;
+}
+
+.specs-table td {
+    vertical-align: middle;
+}
+
+.specs-table .text-center {
+    text-align: center;
+}

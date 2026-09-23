@@ -1,0 +1,35 @@
+<odoo>
+<data>
+<record id="res_partner_transmed_b2b_inherit_form" model="ir.ui.view">
+            <field name="name">res.partner.transmed.b2b.inherit.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='contact_addresses']" position="after">
+
+                    <page string="Transmed-b2b" name="transmed-b2b">
+                    <group>
+                    <field name="b2b_customer_id"/>
+                        <field name="create_via_api"/>
+                        <field name="customer_group"/>
+                        <field name="customer_group_name"/>
+                        <field name="customer_channel"/>
+                        <field name="customer_channel_name"/>
+                        <field name="customer_area"/>
+                        <field name="customer_area_name"/>
+                        <field name="customer_subarea"/>
+                        <field name="customer_subarea_name"/>
+                        <field name="timestamp_jde"/>
+                        <field name="customer_type"/>
+                        <field name="customer_mailing_name"/>
+                        <field name="create_b2b_owner"/>
+
+                    </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

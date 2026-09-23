@@ -1,0 +1,54 @@
+<odoo>
+   <record id="view_sale_order_line_tree_custom_item_type_inherit" model="ir.ui.view">
+    <field name="name">sale.order.line.tree.custom.item_type.inherit</field>
+    <field name="model">sale.order.line</field>
+    <field name="inherit_id" ref="sale.view_order_line_tree"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='name']" position="after">
+            <field name="item_type"/>
+        </xpath>
+    </field>
+</record>
+
+<record id="view_sale_order_line_form_custom_item_type_inherit" model="ir.ui.view">
+    <field name="name">sale.order.line.form.custom.item_type.inherit</field>
+    <field name="model">sale.order.line</field>
+    <field name="inherit_id" ref="sale.sale_order_line_view_form_readonly"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='name']" position="after">
+            <field name="item_type"/>
+        </xpath>
+    </field>
+</record>
+    <record id="view_sale_order_form_custom_item_type_inherit" model="ir.ui.view">
+    <field name="name">sale.order.form.custom.item_type.inherit</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+         <xpath expr="//field[@name='order_line']//list//field[@name='product_uom_qty']" position="after">
+             <field name="item_type" optional="show"/>
+         </xpath>
+         <xpath expr="//field[@name='order_line']//list//field[@name='price_total'][last()]" position="after">
+             <field name="jde_price_total"
+                   string="JDE Total"
+                   optional="hide"/>
+             <field name="jde_delivery_charge"
+                   string="Delivery Charge"
+                   optional="hide"/>
+             <field name="jde_price_unit"
+                   string="JDE Price Unit"
+                   optional="hide"/>
+         </xpath>
+        <xpath expr="//group[@name='note_group']//group[@name='sale_total']" position="after">
+            <group class="oe_subtotal_footer" colspan="2" name="sale_jde_total">
+                <field name="jde_amount_untaxed" colspan="2" readonly="1"/>
+                <field name="jde_amount_tax" colspan="2" readonly="1"/>
+                <field name="jde_amount_total" colspan="2" readonly="1"/>
+            </group>
+        </xpath>
+        <xpath expr="//field[@name='payment_term_id']" position="after">
+            <field name="jde_invoice_no"/>
+        </xpath>
+    </field>
+</record>
+</odoo>

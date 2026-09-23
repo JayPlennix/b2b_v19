@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="custom_e_wallet_loyalty_program" model="loyalty.program">
+        <field name="name">eWallet</field>
+        <field name="program_type">ewallet</field>
+        <field name="applies_on">future</field>
+        <field name="trigger">auto</field>
+        <field name="portal_visible">True</field>
+        <field name="sale_ok">True</field>
+        <field name="ecommerce_ok">True</field>
+        <field name="portal_point_name">AED</field>
+        <field name="trigger_product_ids" eval="[(4, ref('loyalty.ewallet_product_50'))]"/>
+    </record>
+    <record id="custom_e_wallet_loyalty_program_reward" model="loyalty.reward">
+        <field name="reward_type">discount</field>
+        <field name="discount_mode">per_point</field>
+        <field name="discount">1</field>
+        <field name="discount_applicability">order</field>
+        <field name="required_points">1</field>
+        <field name="program_id" ref="custom_saleorder_management.custom_e_wallet_loyalty_program"/>
+    </record>
+</odoo>

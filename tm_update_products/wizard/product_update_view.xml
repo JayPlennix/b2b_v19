@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_update_wizard_form_view" model="ir.ui.view">
+        <field name="name">product.update.wizard.form</field>
+        <field name="model">product.update.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Update Products">
+                <group>
+                    <field name="file" filename="file_name"/>
+                    <field name="file_name" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="action_update_products" string="Update Products" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_product_update_wizard" model="ir.actions.act_window">
+        <field name="name">Update Products</field>
+        <field name="res_model">product.update.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_update_products_wizard" name="Update Products"
+              parent="stock.menu_stock_config_settings" action="action_product_update_wizard" sequence="100"
+              groups="base.group_system"/>
+</odoo>

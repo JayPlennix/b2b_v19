@@ -1,0 +1,87 @@
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_jde_integration_api" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.jde.integration.api</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+
+
+                <xpath expr="//widget[@name='res_config_dev_tool']" position="before">
+                    <block title="JDE Integration" name="jde_setting_container">
+                        <setting id="token_config_details" help="JDE login used by every JDE integration">
+                            <div>
+                                <label for="jde_token_request_url"/>
+
+                            </div>
+                            <div>
+                                <field name="jde_token_request_url" class="o_form_label"/>
+                            </div>
+                            <div>
+                                <label for="jde_request_username" class="o_form_label"/>
+
+                            </div>
+                            <div>
+                                <field name="jde_request_username"/>
+                            </div>
+                            <div>
+                                <label for="jde_request_password" class="o_form_label"/>
+                            </div>
+                            <div>
+                                <field name="jde_request_password" password="True"/>
+                            </div>
+                            <div>
+                                <label for="jde_request_env" class="o_form_label"/>
+                            </div>
+                            <div>
+                                <field name="jde_request_env"/>
+                            </div>
+                            <div>
+                                <label for="jde_request_role" class="o_form_label"/>
+
+                            </div>
+                            <div>
+                                <field name="jde_request_role"/>
+                            </div>
+
+
+                        </setting>
+
+                        <setting id="token_config_details_url">
+
+                            <div>
+                                <label for="jde_checkavailability_url" class="o_form_label"/>
+                            </div>
+                            <div>
+                                <field name="jde_checkavailability_url"/>
+                            </div>
+                            <div>
+                                <label for="jde_bulk_update_url" class="o_form_label"/>
+                            </div>
+                            <div>
+                                <field name="jde_bulk_update_url"/>
+                            </div>
+                             <div>
+                                <label for="jde_last_integration_timestamp" class="o_form_label"/>
+                            </div>
+                            <div>
+                                <field name="jde_last_integration_timestamp"/>
+                            </div>
+                            <div>
+                                <label for="jde_logout_url" class="o_form_label"/>
+                            </div>
+                            <div>
+                                <field name="jde_logout_url"/>
+                            </div>
+                            <div class="mt-2">
+                                <button class="btn-link" icon="fa-plug" string="Test Connection" type="object" name="get_jde_token"/>
+                            </div>
+                        </setting>
+                    </block>
+
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

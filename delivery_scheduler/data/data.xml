@@ -1,0 +1,23 @@
+<odoo>
+    <record id="day1" model="days.days">
+        <field name="name">Monday</field>
+    </record>
+    <record id="day2" model="days.days">
+        <field name="name">Tuesday</field>
+    </record>
+    <record id="day3" model="days.days">
+        <field name="name">Wednesday</field>
+    </record>
+    <record id="day4" model="days.days">
+        <field name="name">Thursday</field>
+    </record>
+    <record id="day5" model="days.days">
+        <field name="name">Friday</field>
+    </record>
+    <record id="day6" model="days.days">
+        <field name="name">Saturday</field>
+    </record>
+    <record id="day7" model="days.days">
+        <field name="name">Sunday</field>
+    </record>
+</odoo>

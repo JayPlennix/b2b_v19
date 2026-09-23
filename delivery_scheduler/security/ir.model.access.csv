@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_delivery_scheduler_user,access_delivery_scheduler_user,model_delivery_scheduler,base.group_user,1,1,1,1
+access_days_days_user,days_days_user,model_days_days,base.group_user,1,1,1,1

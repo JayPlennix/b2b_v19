@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="custom_checkout_inherit" inherit_id="website_sale.checkout">
+        <xpath expr="//div[@id='shop_checkout']/*[1]" position="before">
+            <div class="mb-4" t-if="order.commitment_date">
+                <h5>Expected Delivery Date</h5>
+                <p class="text-primary mb-0">
+                    <t t-esc="order.commitment_date.strftime('%m-%d-%Y')"/>
+                </p>
+            </div>
+        </xpath>
+    </template>
+</odoo>

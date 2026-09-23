@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="product_pricelist_inherit_form" model="ir.ui.view">
+            <field name="name">product.pricelist.inherit.form</field>
+            <field name="model">product.pricelist</field>
+            <field name="inherit_id" ref="product.product_pricelist_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='pricelist_settings']/.." position="after">
+                    <group>
+                        <group name="transmed_b2b" string="Transmed_b2b">
+                            <field name="F4101_timestamp"/>
+                            <field name="F4106_timestamp"/>
+                            <field name="timestamp_jde"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

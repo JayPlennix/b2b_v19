@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="sale_report_inherit" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//div[@id='total']" position="after">
+            <div id="jdetotal" name="jde_total" style="page-break-inside: avoid;">
+                <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto">
+                    <table class="table table-sm table-borderless">
+                        <tr class="border-black o_subtotal">
+                            <td><strong>Untaxed Amount</strong></td>
+                            <td class="text-end">
+                                <span t-field="doc.jde_amount_untaxed">27.00</span>
+                            </td>
+                        </tr>
+                        <tr class="border-black o_subtotal">
+                            <td>Taxes</td>
+                            <td class="text-end">
+                                <span t-field="doc.jde_amount_tax">27.00</span>
+                            </td>
+                        </tr>
+                        <tr class="border-black o_delivery_charge" t-if="doc.jde_delivery_charge">
+                            <td>Delivery Charge</td>
+                            <td class="text-end">
+                                <span t-field="doc.jde_delivery_charge">27.00</span>
+                            </td>
+                        </tr>
+                        <tr class="border-black o_total">
+                            <td><strong>Total</strong></td>
+                            <td class="text-end">
+                                <span t-field="doc.jde_amount_total">31.05</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[@id='total']" position="replace"/>
+        <xpath expr="//th[@name='th_quantity']" position="after">
+            <th name="th_delivery_quantity" class="text-end">Delivery Quantity</th>
+        </xpath>
+        <xpath expr="//td[@name='td_product_quantity']" position="after">
+            <td class="text-end" id="delivery_qty_td">
+                <div id="delivery_qty">
+                    <span t-field="line.qty_delivered"/>
+                </div>
+            </td>
+        </xpath>
+        <xpath expr="//td[@name='td_product_subtotal']" position="replace">
+            <td name="td_product_subtotal" class="text-end o_price_total">
+                <span t-field="line.jde_price_total">27.00</span>
+            </td>
+        </xpath>
+    </template>
+</odoo>

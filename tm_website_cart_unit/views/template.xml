@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Always show the unit of measure of each cart line (customers order the same product
+         in units, boxes or cartons). -->
+    <template id="cart_lines_inherit_add_uom" inherit_id="website_sale.cart_lines" priority="20">
+        <xpath expr="//t[@t-call='website_sale.cart_line_description_following_lines']" position="after">
+            <div t-if="line.product_uom_id" class="small text-muted o_b2b_cart_line_uom">
+                <strong>UOM:</strong> <t t-out="line.product_uom_id.name"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

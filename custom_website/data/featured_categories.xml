@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Create Filter Record -->
+        <record id="product_featured_category_filter" model="ir.filters">
+            <field name="name">Featured Categories</field>
+            <field name="model_id">product.public.category</field>
+            <field name="user_ids" eval="False"/>
+            <field name="domain">[('is_featured_category', '=', True)]</field>
+            <field name="sort">["sequence asc"]</field>
+        </record>
+
+        <!-- Create Featured Categories Filter Records -->
+        <record id="dynamic_filter_product_featured_category" model="website.snippet.filter">
+            <field name="filter_id" ref="custom_website.product_featured_category_filter"/>
+            <field name="field_names">name,image_512</field>
+            <field name="limit" eval="50"/>
+            <field name="name">Featured Categories</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Submitted automatically by the payment form: opens the HyperPay payment page. -->
+    <template id="redirect_form">
+        <form t-att-action="api_url" method="post">
+            <input type="hidden" name="reference" t-att-value="reference"/>
+            <input type="hidden" name="access_token" t-att-value="access_token"/>
+        </form>
+    </template>
+
+    <template id="checkout_page" name="HyperPay Payment">
+        <t t-call="website.layout">
+            <div id="wrap" class="container py-5 o_hyperpay_checkout">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <h3 class="mb-1">Payment</h3>
+                        <p class="text-muted mb-4">
+                            <span t-out="tx.reference"/> —
+                            <span t-out="tx.amount" t-options="{'widget': 'monetary', 'display_currency': tx.currency_id}"/>
+                        </p>
+                        <script t-out="wpwl_script"/>
+                        <script async="async" t-att-src="widget_url"/>
+                        <form t-att-action="result_url" class="paymentWidgets" t-att-data-brands="brands"/>
+                        <a href="/shop/payment" class="btn btn-link px-0 mt-3">
+                            <i class="oi oi-chevron-left me-1"/>Choose another payment method
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

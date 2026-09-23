@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Shop Popular Brands: logos of the main brands, linking to the shop filtered by brand. -->
+    <template id="s_references_2" name="Popular Brands">
+        <section class="s_references pt48 pb32">
+            <div class="container-fluid">
+                <h4 class="text-center fw-semibold">Shop Popular Brands</h4>
+                <div class="row">
+                    <t t-foreach="request.env['product.brand'].sudo().search([('main_brand', '=', True)])" t-as="product_brand">
+                        <div class="col-4 col-md-2 col-lg-1 pt16 pb16">
+                            <a t-attf-href="/shop?brand_id={{ product_brand.id }}">
+                                <img t-if="product_brand.logo" t-att-src="'/web/image/product.brand/%s/logo' % product_brand.id"
+                                     class="img img-fluid mx-auto" t-att-alt="product_brand.name"/>
+                                <span t-else="" t-out="product_brand.name"/>
+                            </a>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- Main Categories: the (up to) four categories flagged "Is Main Category". -->
+    <template id="s_four_columns" name="Main Categories">
+        <section class="s_three_columns home_three_columns pt32 pb32 o_colored_level" data-vcss="001">
+            <div class="container-fluid">
+                <div class="row d-flex align-items-stretch">
+                    <t t-foreach="request.env['product.public.category'].sudo().search([('is_main_category', '=', True)], limit=4)" t-as="category">
+                        <div class="s_col_no_bgcolor pt16 pb16 col-lg-3">
+                            <div class="card h-100">
+                                <a t-att-href="'/shop/category/%s' % category.id">
+                                    <img t-if="category.image_1920" t-att-src="'/web/image/product.public.category/%s/image_1024' % category.id"
+                                         class="card-img-top img img-fluid" style="height: 223px; object-fit: cover;" t-att-alt="category.name"/>
+                                    <div class="card-body">
+                                        <h3 class="card-title" t-out="category.name"/>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="snippets_transmed" inherit_id="website.snippets" name="Transmed Snippets">
+        <xpath expr="//t[@t-snippet='website.s_references']" position="after">
+            <t t-snippet="custom_website.s_references_2" string="Popular Brands" group="people">
+                <keywords>brands, logos, shop</keywords>
+            </t>
+        </xpath>
+        <xpath expr="//t[@t-snippet='website.s_three_columns']" position="after">
+            <t t-snippet="custom_website.s_four_columns" string="Main Categories" group="columns">
+                <keywords>categories, columns, shop</keywords>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Transmed footer: inactive by default, activate the "Transmed Footer" view (Settings > Technical > Views). -->
+    <template id="template_footer_custom" inherit_id="website.layout" name="Transmed Footer" active="False">
+        <xpath expr="//div[@id='wrapwrap']" position="inside">
+            <a href="https://wa.me/971525396851" class="float" target="_blank" rel="noopener" aria-label="WhatsApp">
+                <i class="fa fa-whatsapp my-float"/>
+            </a>
+        </xpath>
+        <xpath expr="//div[@id='footer']" position="replace">
+            <div id="footer" class="oe_structure oe_structure_solo" t-ignore="true" t-if="not no_footer">
+                <section class="s_text_block pt24 pb24 o_b2b_footer" data-snippet="s_text_block" data-name="Text">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-5 pb-3">
+                                <h5 class="pb-2"><strong>Transmed Overseas Inc.</strong></h5>
+                                <p>We offer the best selection, best prices, and fast shipping to keep your business functioning at its best.</p>
+                                <div class="s_social_media no_icon_color o_not_editable" data-snippet="s_social_media" data-name="Social Media">
+                                    <a href="/website/social/twitter" class="s_social_media_twitter" target="_blank"><i class="fa fa-twitter fa-2x m-2"/></a>
+                                    <a href="/website/social/linkedin" class="s_social_media_linkedin" target="_blank"><i class="fa fa-linkedin fa-2x m-2"/></a>
+                                    <a href="/website/social/instagram" class="s_social_media_instagram" target="_blank"><i class="fa fa-instagram fa-2x m-2"/></a>
+                                    <a href="https://wa.me/971525396851" target="_blank" rel="noopener"><i class="fa fa-whatsapp fa-2x m-2"/></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 pb-3">
+                                <h5><strong>Categories</strong></h5>
+                                <ul class="list-unstyled">
+                                    <t t-foreach="request.env['product.public.category'].sudo().search([('parent_id', '=', False)], limit=5)" t-as="category">
+                                        <li class="py-1"><a t-att-href="'/shop/category/%s' % category.id" t-out="category.name"/></li>
+                                    </t>
+                                    <li class="py-1"><a href="/shop">Other</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-2 pb-3">
+                                <h5><strong>About</strong></h5>
+                                <ul class="list-unstyled">
+                                    <li class="py-1"><a href="#">About Us</a></li>
+                                    <li class="py-1"><a href="#">Our Brands</a></li>
+                                    <li class="py-1"><a href="/contactus">Contact Us</a></li>
+                                    <li class="py-1"><a href="#">Privacy Policy</a></li>
+                                    <li class="py-1"><a href="#">Terms &amp;amp; Conditions</a></li>
+                                    <li class="py-1"><a href="#">Return Policy</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-2 pb-3">
+                                <h5><strong>Get Quick Help</strong></h5>
+                                <ul class="list-unstyled">
+                                    <li class="py-1"><a href="/helpdesk/customer-care-1" class="btn btn-light" style="width: 145px;">Help Center</a></li>
+                                    <li class="py-1"><a href="/my/orders" class="btn btn-primary o_b2b_footer_btn" style="width: 145px; white-space: nowrap;">Track my Order</a></li>
+                                    <li class="py-1"><a href="#">Chat Online</a></li>
+                                    <li class="py-1"><a href="#">Shipping &amp;amp; Delivery</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <ul class="list-inline mb-0 text-end">
+                            <li class="list-inline-item"><a href="#">Terms Of Sale</a></li>
+                            <li class="list-inline-item">|</li>
+                            <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+                            <li class="list-inline-item">|</li>
+                            <li class="list-inline-item"><a href="#">Terms of Use</a></li>
+                            <li class="list-inline-item">|</li>
+                            <li class="list-inline-item"><a href="#">Accessibility Policy</a></li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </xpath>
+    </template>
+</odoo>

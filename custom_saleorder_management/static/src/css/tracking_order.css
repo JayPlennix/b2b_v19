@@ -1,0 +1,15 @@
+.tracking_order {
+    height: 25px;
+    display: inline-block;
+}
+
+.extra_fields select, .extra_fields input {
+    width: 280px !important;
+}
+
+/* The portal order shows JDE amounts: hide the standard subtotal column and totals. */
+#details #subtotal_header,
+#details td[name="td_product_subtotal"],
+#details #total {
+    display: none;
+}

@@ -1,0 +1,58 @@
+<odoo>
+    <data>
+    <!-- Form view for Delivery Scheduler -->
+    <record id="view_delivery_scheduler_form" model="ir.ui.view">
+        <field name="name">delivery.scheduler.form</field>
+        <field name="model">delivery.scheduler</field>
+        <field name="arch" type="xml">
+            <form string="Delivery Scheduler">
+                <sheet>
+                    <group>
+                        <group>
+                        <field name="customer_id"/>
+                        <field name="effective_date"/>
+                        <field name="delivery_udc"/>
+                        <field name="day_ids" widget="many2many_tags"/>
+                        <field name="expiry_date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- List view for Delivery Scheduler -->
+    <record id="view_delivery_scheduler_list" model="ir.ui.view">
+        <field name="name">delivery.scheduler.list</field>
+        <field name="model">delivery.scheduler</field>
+        <field name="arch" type="xml">
+            <list string="Delivery Scheduler">
+                <field name="customer_id"/>
+                <field name="effective_date"/>
+                <field name="delivery_udc"/>
+                <field name="day_ids" widget="many2many_tags"/>
+                <field name="expiry_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action for Delivery Scheduler -->
+    <record id="delivery_scheduler_action" model="ir.actions.act_window">
+        <field name="name">Delivery Scheduler</field>
+        <field name="res_model">delivery.scheduler</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+        <!-- Menu item for Delivery Scheduler -->
+
+    <menuitem id="menu_delivery_scheduler"
+        name="Delivery Scheduler"
+        parent="website_sale.menu_ecommerce_settings"
+        action="delivery_scheduler_action"
+        sequence="12"
+        groups="base.group_user"
+        />
+
+
+    </data>
+</odoo>

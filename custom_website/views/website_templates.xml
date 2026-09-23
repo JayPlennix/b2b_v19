@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============ Header: category mega menu ============ -->
+    <template id="custom_website_navbar" inherit_id="website.layout" name="Transmed Category Menu">
+        <xpath expr="//header[@id='top']" position="inside">
+            <nav aria-label="Categories" class="navbar navbar-expand-lg o_b2b_category_nav d-none d-lg-block shadow-sm">
+                <div class="container-fluid">
+                    <ul class="nav navbar-nav top_menu">
+                        <t t-foreach="request.env['product.public.category'].search([('parent_id', '=', False), ('website_id', 'in', (False, request.website.id))])"
+                           t-as="category">
+                            <t t-set="sub_categories"
+                               t-value="request.env['product.public.category'].search([('parent_id', '=', category.id), ('website_id', 'in', (False, request.website.id))], order='sequence, id')"/>
+                            <li t-if="sub_categories" class="nav-item dropdown position-static">
+                                <a data-bs-toggle="dropdown" href="#" aria-expanded="false"
+                                   class="nav-link dropdown-toggle o_mega_menu_toggle">
+                                    <span class="navlink2" t-out="category.name"/>
+                                </a>
+                                <div class="dropdown-menu o_mega_menu container-fluid">
+                                    <div class="product-container">
+                                        <div class="product-grid">
+                                            <t t-foreach="sub_categories[:9]" t-as="sub_category">
+                                                <a t-att-href="'/shop/category/%s' % sub_category.id">
+                                                    <div class="product-item">
+                                                        <img class="rounded shadow" loading="lazy"
+                                                             t-att-src="'/web/image/product.public.category/%s/image_128' % sub_category.id"
+                                                             t-att-alt="sub_category.name"/>
+                                                        <div class="media-body" t-out="sub_category.name"/>
+                                                    </div>
+                                                </a>
+                                            </t>
+                                        </div>
+                                        <div class="product-list" t-if="sub_categories[9:]">
+                                            <ul class="product-grid-list">
+                                                <t t-foreach="sub_categories[9:]" t-as="sub_category">
+                                                    <li class="product-item-list">
+                                                        <a t-att-href="'/shop/category/%s' % sub_category.id" t-out="sub_category.name"/>
+                                                    </li>
+                                                </t>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li t-else="" class="nav-item">
+                                <a t-att-href="'/shop/category/%s' % category.id" class="nav-link">
+                                    <span class="navlink2" t-out="category.name"/>
+                                </a>
+                            </li>
+                        </t>
+                    </ul>
+                </div>
+            </nav>
+        </xpath>
+    </template>
+
+    <template id="template_header_mobile_inh" inherit_id="website.template_header_mobile" name="Transmed Mobile Categories">
+        <xpath expr="//div[hasclass('offcanvas-body')]" position="inside">
+            <ul class="navbar-nav mt-3 w-100 o_b2b_mobile_categories">
+                <t t-foreach="request.env['product.public.category'].search([('parent_id', '=', False), ('website_id', 'in', (False, request.website.id))])"
+                   t-as="category">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" t-out="category.name"/>
+                        <ul class="dropdown-menu">
+                            <t t-foreach="request.env['product.public.category'].search([('parent_id', '=', category.id)], order='sequence, id')"
+                               t-as="sub_category">
+                                <li>
+                                    <a class="dropdown-item" t-att-href="'/shop/category/%s' % sub_category.id" t-out="sub_category.name"/>
+                                </li>
+                            </t>
+                        </ul>
+                    </li>
+                </t>
+            </ul>
+        </xpath>
+    </template>
+
+    <!-- ============ Login: no public sign up, contact Transmed instead ============ -->
+    <template id="my_custom_login" inherit_id="auth_signup.login" name="Transmed Sign up">
+        <xpath expr="//div[hasclass('justify-content-between')]" position="replace">
+            <div class="d-flex justify-content-between align-items-center small mt-2">
+                <a t-if="signup_enabled" href="/contactus">Don't have an account?</a>
+                <a t-if="reset_password_enabled" t-attf-href="/web/reset_password?{{ keep_query() }}">Reset Password</a>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- ============ Prices: products sold by the gram are shown per kg ============ -->
+    <template id="product_price_inherit" inherit_id="website_sale.product_price" name="Transmed Product Price">
+        <xpath expr="//span[hasclass('oe_price')]" position="attributes">
+            <attribute name="t-attf-class">oe_price #{'d-none' if product._b2b_price_display()[0] != 1 else ''}</attribute>
+        </xpath>
+        <xpath expr="//span[hasclass('oe_price')]" position="after">
+            <t t-set="b2b_display" t-value="product._b2b_price_display()"/>
+            <span t-if="b2b_display[0] != 1" class="o_b2b_kg_price" style="white-space: nowrap;"
+                  t-out="combination_info['price'] * b2b_display[0]"
+                  t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+            <span t-if="b2b_display[1]" class="o_b2b_price_unit">/ <t t-out="b2b_display[1]"/></span>
+        </xpath>
+    </template>
+
+    <template id="products_item_inherit" inherit_id="website_sale.products_item" name="Transmed Product Tile Price">
+        <xpath expr="//div[hasclass('product_price')]/span[hasclass('fw-bold')]" position="replace">
+            <t t-set="b2b_display" t-value="product._b2b_price_display()"/>
+            <span class="mb-0 fw-bold" aria-label="Sale price"
+                  t-if="template_price_vals['price_reduce'] or not website.prevent_zero_price_sale"
+                  t-out="template_price_vals['price_reduce'] * b2b_display[0]"
+                  t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+            <span t-if="b2b_display[1]" class="small text-muted">/ <t t-out="b2b_display[1]"/></span>
+        </xpath>
+        <xpath expr="//t[@name='product_base_price']//small" position="attributes">
+            <attribute name="t-esc">template_price_vals['base_price'] * b2b_display[0]</attribute>
+        </xpath>
+    </template>
+
+    <!-- ============ Product page: JDE specifications ============ -->
+    <template id="custom_product_details" inherit_id="website_sale.product" name="Transmed Product Specs">
+        <xpath expr="//div[hasclass('o_wsale_product_details_content_section_cta')]" position="after">
+            <div class="o_wsale_product_details_content_section mb-4 specs-table">
+                <table class="table table-bordered table-sm">
+                    <tr><th colspan="2" class="text-center">Specs</th></tr>
+                    <tr t-if="product.jde_product_id"><td>Item No</td><td t-out="product.jde_product_id"/></tr>
+                    <tr t-if="product.name"><td>Description</td><td t-out="product.name"/></tr>
+                    <tr t-if="product.categ_id.parent_id"><td>Category</td><td t-out="product.categ_id.parent_id.name"/></tr>
+                    <tr t-if="product.categ_id"><td>Sub Category</td><td t-out="product.categ_id.name"/></tr>
+                    <tr t-if="product.brand_name"><td>Brand</td><td t-out="product.brand_name"/></tr>
+                    <tr t-if="product.brand_type_name"><td>Brand Type</td><td t-out="product.brand_type_name"/></tr>
+                    <tr t-if="product.product_family_name"><td>Product Family</td><td t-out="product.product_family_name"/></tr>
+                    <tr t-if="product.country_of_origin"><td>Product Origin</td><td t-out="product.country_of_origin.name"/></tr>
+                    <tr t-if="product.storage"><td>Storage</td><td t-out="product.storage"/></tr>
+                    <tr t-if="product.temperature"><td>Temperature</td><td t-out="product.temperature"/></tr>
+                </table>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="remove_specification" inherit_id="website_sale_comparison.product_attributes_body"
+              name="Transmed Hide Full Specifications">
+        <xpath expr="//section[@id='product_full_spec']" position="attributes">
+            <attribute name="class" add="d-none" separator=" "/>
+        </xpath>
+    </template>
+
+    <!-- ============ Cart ============ -->
+    <template id="cart_lines" inherit_id="website_sale.cart_lines" name="Transmed Cart Line Options">
+        <xpath expr="//t[@t-call='website_sale.cart_line_description_following_lines']" position="after">
+            <div t-if="line.item_type" class="small fst-italic text-danger">
+                <strong t-field="line.item_type"/>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="cart_clear_button" inherit_id="website_sale.cart" name="Transmed Clear Cart">
+        <xpath expr="//t[@t-call='website_sale.cart_lines']" position="before">
+            <div t-if="website_sale_order and website_sale_order.website_order_line"
+                 class="d-flex justify-content-end mb-3">
+                <button type="button" class="btn btn-outline-primary js_b2b_clear_cart">Clear Cart</button>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Delivery charges come from JD Edwards: hide Odoo's delivery line. -->
+    <template id="cart_hide_delivery" inherit_id="website_sale.total" name="Transmed Hide Delivery Line">
+        <xpath expr="//tr[@name='o_order_delivery']" position="attributes">
+            <attribute name="class" add="d-none" separator=" "/>
+        </xpath>
+    </template>
+
+    <!-- ============ Checkout: salesperson chooses the customer ============ -->
+    <template id="checkout_salesperson_customer" inherit_id="website_sale.checkout" name="Transmed Salesperson Customer">
+        <xpath expr="//div[@id='shop_checkout']" position="before">
+            <div t-if="b2b_salesperson_customers is not None and request.env.user.is_salesperson" class="card mb-4">
+                <div class="card-body">
+                    <form action="/shop/salesperson/customer" method="post" class="d-flex flex-wrap align-items-end gap-2">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="flex-grow-1">
+                            <label for="b2b_customer_id" class="form-label fw-bold">Order for customer</label>
+                            <select id="b2b_customer_id" name="customer_id" class="form-select">
+                                <option value="0">Myself</option>
+                                <t t-foreach="b2b_salesperson_customers" t-as="customer">
+                                    <option t-att-value="customer.id" t-att-selected="customer == b2b_selected_customer"
+                                            t-out="customer.name"/>
+                                </t>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Apply</button>
+                    </form>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- ============ Portal ============ -->
+    <template id="tp_portal_my_orders" inherit_id="sale.portal_my_orders" name="Transmed Order Status">
+        <xpath expr="//th[@name='order_total']" position="before">
+            <th class="text-center">Status</th>
+        </xpath>
+        <xpath expr="//td[@name='order_amount_total']" position="before">
+            <td class="text-center">
+                <span class="badge text-bg-primary">
+                    <t t-if="order.state == 'jde_confirmed'">Confirmed</t>
+                    <t t-else="" t-out="dict(order._fields['state']._description_selection(order.env)).get(order.state)"/>
+                </span>
+            </td>
+        </xpath>
+    </template>
+
+    <template id="sale_order_portal_content_inherit_sale_stock" inherit_id="sale_stock.sale_order_portal_content_inherit_sale_stock"
+              name="Transmed Delivery JDE State">
+        <xpath expr="//div[@name='delivery_details']/div" position="before">
+            <span t-if="picking.jde_state" class="small badge text-bg-info">
+                <i class="fa fa-fw fa-clock-o"/><span t-field="picking.jde_state"/>
+            </span>
+        </xpath>
+    </template>
+
+    <template id="transaction_status_custom_website" inherit_id="payment.state_header" name="Transmed Payment Status">
+        <xpath expr="//t[@t-if='tx.state_message']" position="replace">
+            <t t-if="tx.sale_order_ids[:1] and tx.sale_order_ids[:1].get_jde_order_status()">
+                <p class="mb-0">Your payment was processed successfully</p>
+            </t>
+            <t t-elif="tx.state_message" t-out="tx.state_message" class="mb-0"/>
+        </xpath>
+    </template>
+
+    <!-- ============ Wishlist: logged-in customers only ============ -->
+    <template id="header_wishlist_link_logged_in_only" inherit_id="website_sale_wishlist.header_wishlist_link" priority="99">
+        <xpath expr="//t[@t-set='show_wishes']" position="attributes">
+            <attribute name="t-value">website.has_ecommerce_access() and not request.env.user._is_public()</attribute>
+        </xpath>
+    </template>
+
+    <!-- ============ Language selector on the blue header ============ -->
+    <template id="language_selector" inherit_id="portal.language_selector" name="Transmed Language Selector">
+        <xpath expr="//a[hasclass('dropdown-item')]" position="attributes">
+            <attribute name="style">color: white !important;</attribute>
+        </xpath>
+    </template>
+
+    <template id="product_add_to_wishlist_logged_in_only" inherit_id="website_sale_wishlist.product_add_to_wishlist" priority="99"
+              name="Transmed Wishlist Button Logged-in Only">
+        <xpath expr="//a[@t-att-data-product-product-id='product_variant.id']" position="attributes">
+            <attribute name="t-if">product_variant and not request.env.user._is_public()</attribute>
+        </xpath>
+    </template>
+</odoo>

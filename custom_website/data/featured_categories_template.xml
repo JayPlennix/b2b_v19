@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="dynamic_filter_template_product_public_category_mini_category_card" name="Mini Categories">
+            <t t-foreach="records" t-as="data" data-number-of-elements="6" data-number-of-elements-sm="1"
+               data-thumb="/custom_website/static/src/img/snippets_options/product_category_card.svg">
+                <t t-set="record" t-value="data['_record']"/>
+                <div class="o_carousel_product_card bg-transparent w-100 card border-0 pt32 text-center o_colored_level col-lg-2 pb0">
+                    <div t-if="is_sample" class="h5 o_ribbon_right bg-primary text-uppercase">Sample</div>
+                    <input type="hidden" name="category-id" t-att-data-product-id="record.id"/>
+                    <a class="o_carousel_product_img_link o_dynamic_product_hovered stretched-link"
+                        t-att-href="'/shop/category/' + str(record.id)">
+                        <div class="overflow-hidden rounded">
+                            <img class="card-img-top o_img_product_square o_img_product_cover h-auto"
+                                 style="border-radius: 60px;"
+                                 loading="lazy" t-att-src="data['image_512']" t-att-alt="record.name"/>
+                        </div>
+                    </a>
+                    <div class="o_carousel_product_card_body d-flex flex-wrap flex-column justify-content-between h-100 p-3">
+                        <div class="h6 card-title" t-field="record.name"/>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

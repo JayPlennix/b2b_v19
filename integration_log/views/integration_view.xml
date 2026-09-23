@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- FORM -->
+    <record model="ir.ui.view" id="integration_log_form_view">
+        <field name="name">Integration log form view</field>
+        <field name="model">integration.log</field>
+        <field name="arch" type="xml">
+            <form string="Integration Log" create="0" edit="0" delete="0">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="url"/>
+                            <field name="headers"/>
+                            <field name="payload"/>
+                            <field name="response"/>
+                        </group>
+                        <group>
+                            <field name="model"/>
+                            <field name="res_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- LIST -->
+    <record id="integration_log_list_view" model="ir.ui.view">
+        <field name="name">Integration log list view</field>
+        <field name="model">integration.log</field>
+        <field name="arch" type="xml">
+            <list string="Integration Log" create="0" edit="0" delete="0">
+                <field name="name" />
+                <field name="url"/>
+                <field name="model" />
+                <field name="res_id" />
+            </list>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="integration_log_action">
+        <field name="name">Integration log</field>
+        <field name="res_model">integration.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_parent_integration_log" name="SAP-Odoo Log" parent="base.menu_administration" sequence="111"/>
+    <menuitem id="menu_integration_log" name="Integration Log" parent="integration_log.menu_parent_integration_log" sequence="10" action="integration_log.integration_log_action"/>
+</odoo>

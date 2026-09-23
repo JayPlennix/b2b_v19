@@ -1,0 +1,8 @@
+.o_footer .o_footer_copyright {
+  background-color: rgb(0 106 194);
+}
+
+.o_footer_copyright .o_footer_copyright_name {
+  vertical-align: middle;
+  color: white !important;
+}

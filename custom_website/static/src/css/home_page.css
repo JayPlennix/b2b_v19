@@ -1,0 +1,184 @@
+.media-body {
+    flex: 1;
+    text-align: left;
+    margin-top: 10px;
+}
+
+.product-container {
+    display: flex;
+    min-height: 270px !important;
+    height: 270px !important;
+    padding: 15px;
+    padding-top: 20px;
+    background-color: #ffffff;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 50%;
+}
+
+.product-item {
+    text-align: center;
+    font-size: 13px;
+    display: flex;
+}
+
+.product-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 1px solid gray;
+    border-radius: 5px !important;
+    padding: 5px;
+}
+
+.product-list {
+    width: 50%;
+    background: #f9f9f9;
+    padding: 10px;
+    padding-left: 20px;
+    overflow-x: overlay;
+    overflow-x: auto;
+}
+
+.product-list ul {
+    list-style: none;
+    padding: 0;
+    color: black !important;
+}
+
+.product-list li {
+    padding: 3px;
+    color: black !important;
+    font-size: 13px;
+}
+
+.product-list li:hover {
+    text-decoration-line: underline;
+    cursor: grab !important;
+    --tw-bg-opacity: 1;
+    border-radius: 4px;
+    border: 1px solid gainsboro;
+    background-color: rgb(238 240 237/var(--tw-bg-opacity));
+}
+
+.gayatri_div {
+    padding-left: 80px !important;
+    padding-right: 80px !important;
+    position: absolute !important;
+    inset: 0px auto auto 0px !important;
+    margin: 0px !important;
+    border: hidden !important;
+    transform: translate3d(0px, 39.4px, 0px) !important;
+}
+
+.product-grid-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.gayu22:hover {
+    text-decoration-line: underline;
+    cursor: grab !important;
+    background: #f7f7f7;
+    border-radius: 4px;
+    border: 1px solid gainsboro;
+}
+
+.product-item-list {
+    box-sizing: border-box;
+}
+
+.product-item-list a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.float{
+	position:fixed;
+	bottom:19px;
+	right:121px;
+	    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    top: calc(97% - 56px);
+    left: calc(97% - 121px);
+	background-color:#25d366;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+  font-size:30px;
+	box-shadow: 2px 2px 3px #999;
+  z-index:100;
+}
+
+.my-float{
+	margin-top:12px;
+}
+
+.loading-state {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loading {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 10px solid #ddd;
+  border-top-color: #006AC2;
+  animation: loading 1s linear infinite;
+}
+@keyframes loading {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* Category mega menu bar */
+.o_b2b_category_nav {
+    background: #0076C0;
+    padding: 0;
+}
+.o_b2b_category_nav .nav-link {
+    color: white !important;
+}
+/* Transmed footer */
+.o_b2b_footer {
+    background: #006ac2;
+    color: white;
+}
+.o_b2b_footer a:not(.btn) {
+    color: white;
+}
+.o_b2b_mini_product {
+    background-color: white;
+    border: 1px solid #dddddd;
+}
+.o_b2b_mini_product_name {
+    color: #1684e7bf;
+    font-weight: 600;
+}
+
+.o_b2b_footer .o_b2b_footer_btn {
+    background: #006ac2;
+    border-color: white;
+    color: white;
+}

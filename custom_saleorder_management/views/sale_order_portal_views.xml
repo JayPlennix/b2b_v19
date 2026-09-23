@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Show every outgoing delivery (JDE splits orders into several deliveries). -->
+    <template id="sale_order_portal_content_inherit_sale_stock"
+              name="Sales Order Portal Content"
+              inherit_id="sale_stock.sale_order_portal_content_inherit_sale_stock">
+        <xpath expr="//t[@t-set='latest_delivery_orders']" position="replace">
+            <t t-set="latest_delivery_orders" t-value="delivery_orders.sorted('create_date', reverse=True)"/>
+        </xpath>
+    </template>
+
+    <!-- Show JDE prices and totals instead of the Odoo ones. The standard subtotal
+         column and totals are hidden with CSS (tracking_order.css). -->
+    <template id="sale_order_portal_content_return"
+              name="Sales Order Portal Content"
+              inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//section[@id='details']//th[@id='taxes_header']" position="after">
+            <th class="text-end" id="jde_subtotal_header">Amount</th>
+        </xpath>
+        <xpath expr="//section[@id='details']//td[@name='td_product_taxes']" position="after">
+            <td class="text-end" id="jdesubtotal">
+                <span t-if="line.is_reward_line" class="oe_order_line_price_subtotal" t-field="line.price_total"/>
+                <span t-else="" class="oe_order_line_price_subtotal" t-field="line.jde_price_total"/>
+            </td>
+        </xpath>
+        <xpath expr="//section[@id='details']//div[@id='total']" position="after">
+            <div id="jdetotal" name="jde_total" style="page-break-inside: avoid;">
+                <div class="col-xs-7 col-md-5 ms-auto">
+                    <table class="table table-sm">
+                        <tr class="border-black o_subtotal">
+                            <td><strong>Untaxed Amount</strong></td>
+                            <td class="text-end">
+                                <span t-field="sale_order.jde_amount_untaxed">27.00</span>
+                            </td>
+                        </tr>
+                        <tr class="border-black o_subtotal">
+                            <td>Taxes</td>
+                            <td class="text-end">
+                                <span t-field="sale_order.jde_amount_tax">27.00</span>
+                            </td>
+                        </tr>
+                        <tr class="border-black o_delivery_charge" t-if="sale_order.jde_delivery_charge">
+                            <td>Delivery Charge</td>
+                            <td class="text-end">
+                                <span t-field="sale_order.jde_delivery_charge">27.00</span>
+                            </td>
+                        </tr>
+                        <tr class="border-black o_total">
+                            <td><strong>Total</strong></td>
+                            <td class="text-end">
+                                <span t-field="sale_order.jde_amount_total">31.05</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[@t-if='line.discount &gt;= 0']" position="replace">
+            <t t-if="line.discount &gt;= 0">
+                <div
+                    t-if="line.is_reward_line"
+                    t-field="line.price_unit"
+                    t-att-style="line.discount and 'text-decoration: line-through' or None"
+                    t-att-class="(line.discount and 'text-danger' or '') + ' text-end'"
+                    t-options="{'widget': 'monetary', 'display_currency': line.currency_id}"
+                />
+                <div
+                    t-else=""
+                    t-field="line.jde_price_unit"
+                    t-att-style="line.discount and 'text-decoration: line-through' or None"
+                    t-att-class="(line.discount and 'text-danger' or '') + ' text-end'"
+                    t-options="{'widget': 'monetary', 'display_currency': line.currency_id}"
+                />
+            </t>
+        </xpath>
+        <xpath expr="//div[@t-if='line.discount']" position="replace">
+            <div t-if="line.discount">
+                <t t-out="(1-line.discount / 100.0) * (line.price_unit if line.is_reward_line else line.jde_price_unit)"
+                   t-options='{"widget": "float", "decimal_precision": "Product Price"}'/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

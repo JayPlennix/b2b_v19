@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="product_brand_form" model="ir.ui.view">
+        <field name="name">product.brand.form</field>
+        <field name="model">product.brand</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="logo" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="name" string="Brand Name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Description">
+                            <group string="Description">
+                                <field name="description"/>
+                                <field name="main_brand"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="product_brand_list" model="ir.ui.view">
+        <field name="name">product.brand.list</field>
+        <field name="model">product.brand</field>
+        <field name="arch" type="xml">
+            <list string="Brands">
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Name"/>
+                <field name="main_brand" string="Main Brand"/>
+            </list>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_product_brand">
+        <field name="name">Brand</field>
+        <field name="res_model">product.brand</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem name="Product Brands"
+            id="menu_product_brand"
+            action="action_product_brand"
+              sequence="40"
+            parent="sale.product_menu_catalog"/>
+</odoo>

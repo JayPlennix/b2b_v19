@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_company_inherit_form_custom_website" model="ir.ui.view">
+        <field name="name">res.company.form.transmed.flags</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="before">
+                <field name="is_ksa"/>
+                <field name="is_jordan"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="contact_view_form_changes_for_custom" model="ir.ui.view">
+        <field name="name">res.partner.form.transmed</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet//field[@name='vat']" position="after">
+                <field name="customer_location_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Portal salespersons can be set as the Salesperson of a customer. -->
+    <record id="res_partner_salesperson_any_user" model="ir.ui.view">
+        <field name="name">res.partner.form.transmed.salesperson</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales_purchases']//field[@name='user_id']" position="attributes">
+                <attribute name="domain">[]</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_partner_search_inherit" model="ir.ui.view">
+        <field name="name">res.partner.search.transmed</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="before">
+                <filter name="ksa_customer" string="KSA Contacts" domain="[('is_ksa', '=', True)]"/>
+                <filter name="jordan_customer" string="Jordan Contacts" domain="[('is_jordan', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_users_inherit_form_custom_website" model="ir.ui.view">
+        <field name="name">res.users.form.transmed.salesperson</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <field name="login" position="after">
+                <div name="b2b_options">
+                    <span class="d-inline-block">
+                        <field name="is_salesperson"/>
+                        <label for="is_salesperson"/>
+                    </span>
+                </div>
+            </field>
+        </field>
+    </record>
+
+    <record id="sale_order_inherit_form_custom_website" model="ir.ui.view">
+        <field name="name">sale.order.form.transmed.salesperson</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='sale_header']//field[@name='date_order']" position="after">
+                <field name="is_salesperson_customer_id" readonly="1" invisible="not is_salesperson_customer_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_product_inherit_form_custom_website" model="ir.ui.view">
+        <field name="name">product.product.form.transmed.flags</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <div name="options" position="inside">
+                <span class="d-inline-flex">
+                    <field name="high_review_product"/>
+                    <label for="high_review_product"/>
+                </span>
+                <span class="d-inline-flex">
+                    <field name="best_selling_product"/>
+                    <label for="best_selling_product"/>
+                </span>
+            </div>
+        </field>
+    </record>
+
+    <record id="product_template_inherit_form_custom_website" model="ir.ui.view">
+        <field name="name">product.template.form.transmed.limited</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="limited_item_ids" widget="many2many_tags"
+                       domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_search_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.search.transmed</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='goods']" position="after">
+                <filter name="ksa_product" string="KSA Product" domain="[('is_ksa', '=', True)]"/>
+                <filter name="jordan_product" string="Jordan Product" domain="[('is_jordan', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_tree_view_custom_website" model="ir.ui.view">
+        <field name="name">product.template.list.transmed</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='is_favorite']" position="after">
+                <field name="image_128" widget="image" optional="show" options="{'size': [32, 32]}"/>
+            </xpath>
+            <xpath expr="//field[@name='default_code']" position="after">
+                <field name="company_id" column_invisible="True"/>
+                <field name="limited_item_ids" optional="show" widget="many2many_tags"/>
+                <field name="jde_product_id" optional="show"/>
+                <field name="brand_id" optional="show"/>
+                <field name="brand" optional="show"/>
+                <field name="allow_out_of_stock_order" optional="show"/>
+                <field name="is_published" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_pricelist_view_search_inherit" model="ir.ui.view">
+        <field name="name">product.pricelist.search.transmed</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='inactive']" position="before">
+                <filter name="ksa_pricelist" string="KSA Pricelist" domain="[('is_ksa', '=', True)]"/>
+                <filter name="jordan_pricelist" string="Jordan Pricelist" domain="[('is_jordan', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_public_category_view_form_changes_for_custom" model="ir.ui.view">
+        <field name="name">product.public.category.form.transmed</field>
+        <field name="model">product.public.category</field>
+        <field name="inherit_id" ref="website_sale.product_public_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sequence']" position="after">
+                <field name="is_featured_category"/>
+                <field name="is_main_category"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_website_form_ext" model="ir.ui.view">
+        <field name="name">website.form.transmed.flags</field>
+        <field name="model">website</field>
+        <field name="inherit_id" ref="website.view_website_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='language_ids']" position="after">
+                <field name="is_ksa"/>
+                <field name="is_jordan"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <!-- Show what is already in the cart per unit of measure (a product can be in the cart
+         in several units, for example units and boxes). -->
+    <t t-name="tm_website_product_name.product_availability"
+       t-inherit="website_sale_stock.product_availability" t-inherit-mode="extension">
+        <xpath expr="//span[@id='already_in_cart_message']" position="inside">
+            <t t-if="free_qty and cart_lines and cart_lines.length">
+                <t t-foreach="cart_lines" t-as="line" t-key="line.uom">
+                    <div>You already added <t t-out="line.qty"/> <t t-out="line.uom"/> in your cart.</div>
+                </t>
+            </t>
+        </xpath>
+    </t>
+</templates>
